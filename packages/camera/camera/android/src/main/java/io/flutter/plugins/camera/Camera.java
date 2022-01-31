@@ -584,7 +584,10 @@ class Camera
 
     try {
       captureSession.stopRepeating();
-      captureSession.abortCaptures();
+      // Execute under Android 12(S) only.
+      if(Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+        captureSession.abortCaptures();
+      }
       Log.i(TAG, "sending capture request");
       captureSession.capture(stillBuilder.build(), captureCallback, backgroundHandler);
     } catch (CameraAccessException e) {
